@@ -58,14 +58,15 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> getData() async {
+    Map<String, dynamic> map;
     _users.get().then(
           (res) => {
             if (res.docs.isNotEmpty)
               {
                 for (int i = 0; i < res.docs.length; i++)
                   {
-                    print("doc ${res.docs[i].data()}"),
-                    usersList.add(Users.toJson(res.docs[i].data().hashCode))
+                    map = res.docs[i].data() as Map<String, dynamic>,
+                    usersList.add(Users.fromJson(map))
                   },
 //_users.add(res)
               },
@@ -135,11 +136,12 @@ class _MyHomePageState extends State<MyHomePage> {
           itemCount: usersList.length,
           itemBuilder: (context, index) {
             return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Row(
                   children: [
                     Expanded(child: Text(usersList[index].name)),
-                    IconButton(onPressed: () {}, icon: Icon(Icons.remove))
+                    IconButton(onPressed: () {}, icon: Icon(Icons.delete))
                   ],
                 ),
                 Text(usersList[index].address)
